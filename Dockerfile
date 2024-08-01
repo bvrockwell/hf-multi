@@ -40,9 +40,10 @@ ENV MODEL_NAME="stabilityai/stable-diffusion-3-medium-diffusers"
 ENV MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
 ENV INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 ENV OUTPUT_DIR="/tmp/sd3-output"
+ENV ACC_CONFIG="${ACC_CONFIG:-/hf-multi/2host_config.yaml}"
 
 # update config for # of nodes
-RUN "./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG"
+RUN ["/bin/bash", "-c", "./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG"]
 
 ENV LAUNCHER="./opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
@@ -77,5 +78,5 @@ ENV SCRIPT_ARGS=" \
 # This step is necessary because accelerate launch does not handle multiline arguments properly
 ENV LAUNCH_CMD="$LAUNCHER $PYTHON_FILE $ARGS" 
 
-CMD ["/bin/bash", "$LAUNCH_CMD"]
+CMD ["/bin/bash", "-c", "$LAUNCH_CMD"]
 
