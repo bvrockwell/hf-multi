@@ -31,10 +31,10 @@ ENV NCCL_SHIMNET_GUEST_CONFIG_CHECKER_CONFIG_FILE=${NCCL_LIB_DIR}/a3plus_guest_c
 ENV NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS=600000
 ENV NCCL_NVLS_ENABLE=0 
 
-ENV NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS: $NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS
-ENV MASTER_ADDR=$(if [[ $RANK -gt 0 ]]; then echo $MASTER_ADDR;else echo localhost;fi)
+ENV NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS=$NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS
+ENV MASTER_ADDR = $(if [[ $RANK -gt 0 ]]; then echo $MASTER_ADDR;else echo localhost;fi)
 ENV MASTER_PORT=$MASTER_PORT
-ENV NUM_PROCESSES=$((NODE_COUNT * $NUM_PROCESS))
+ENV NUM_PROCESSES = $((NODE_COUNT * $NUM_PROCESS))
 
 ENV MODEL_NAME="stabilityai/stable-diffusion-3-medium-diffusers"
 ENV MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
@@ -42,7 +42,7 @@ ENV INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 ENV OUTPUT_DIR="/tmp/sd3-output"
 
 # update config for # of nodes
-RUN ./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG
+RUN "./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG"
 
 ENV LAUNCHER="./opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
