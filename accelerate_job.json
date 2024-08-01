@@ -17,7 +17,7 @@
                 },
                 "replicaCount": "1",
                 "containerSpec": {
-                    "imageUri": "us-east5-docker.pkg.dev/google.com/vertex-training-dlexamples/hosseins-a3-mega-training-repository/britt-test:latest",
+                    "imageUri": "us-east5-docker.pkg.dev/google.com/vertex-training-dlexamples/britt-a3-mega/hf-vertex:latest",
                     "env": [
                         {
                             "name": "LD_LIBRARY_PATH",
@@ -49,7 +49,7 @@
                 },
                 "replicaCount": "1",
                 "containerSpec": {
-                    "imageUri": "us-east5-docker.pkg.dev/google.com/vertex-training-dlexamples/hosseins-a3-mega-training-repository/britt-test:latest",
+                    "imageUri": "us-east5-docker.pkg.dev/google.com/vertex-training-dlexamples/britt-a3-mega/hf-vertex:latest",
                     "env": [
                         {
                             "name": "LD_LIBRARY_PATH",
