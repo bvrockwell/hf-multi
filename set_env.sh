@@ -49,6 +49,8 @@ export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilitya
 export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 export OUTPUT_DIR="/tmp/sd3-output"
 
+export PROMPT1='photo'
+export PROMPT2='painting'
 export LAUNCH_CMD=" \
     /opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
@@ -61,8 +63,7 @@ export LAUNCH_CMD=" \
     --pretrained_model_name_or_path $MODEL_NAME  \
     --instance_data_dir $INSTANCE_DIR \
     --output_dir $OUTPUT_DIR \
-    --mixed_precision fp16 \
-    --instance_prompt='a photo of sks dog' \
+    --instance_prompt $PROMPT1 \
     --resolution 1024 \
     --train_batch_size 1 \
     --gradient_accumulation_steps 4 \
@@ -70,7 +71,7 @@ export LAUNCH_CMD=" \
     --lr_scheduler constant \
     --lr_warmup_steps 0 \
     --max_train_steps 500 \
-    --validation_prompt='a photo of sks dog in a bucket' \
+    --validation_prompt $PROMPT2 \
     --validation_epochs 25 \
     --seed 0 \
     "
