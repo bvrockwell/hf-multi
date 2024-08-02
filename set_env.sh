@@ -33,7 +33,7 @@ export NUM_PROCESSES=$(($NODE_COUNT * 8))
 
 export ACC_CONFIG="${ACC_CONFIG:-/hf-multi/2host_config.yaml}"
 
-export LAUNCHER="./opt/conda/bin/accelerate launch \
+export LAUNCHER="/opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
     --num_machines $NODE_COUNT \
     --rdzv_backend c10d \
@@ -64,4 +64,5 @@ export SCRIPT_ARGS=" \
     "
 
 # This step is necessary because accelerate launch does not handle multiline arguments properly
-export LAUNCH_CMD="$LAUNCHER $PYTHON_FILE $SCRIPT_ARGS" 
+export NEW_CMD="$LAUNCHER $PYTHON_FILE $SCRIPT_ARGS"
+echo $NEW_CMD
