@@ -44,6 +44,11 @@ export LAUNCHER="/opt/conda/bin/accelerate launch \
 
 export PYTHON_SCRIPT="diffusers/examples/dreambooth/train_dreambooth_sd3.py"
 
+# export MODEL_NAME="stabilityai/stable-diffusion-3-medium-diffusers"
+export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
+export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
+export OUTPUT_DIR="/tmp/sd3-output"
+
 export SCRIPT_ARGS=" \
     --debug \
     --pretrained_model_name_or_path $MODEL_NAME  \
