@@ -33,7 +33,7 @@ export NUM_PROCESSES=$(($NODE_COUNT * 8))
 
 export ACC_CONFIG="${ACC_CONFIG:-/hf-multi/2host_config.yaml}"
 
-export LAUNCHER="/opt/conda/bin/accelerate launch \
+export LAUNCHER="./opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
     --num_machines $NODE_COUNT \
     --rdzv_backend c10d \
@@ -50,7 +50,6 @@ export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 export OUTPUT_DIR="/tmp/sd3-output"
 
 export SCRIPT_ARGS=" \
-    --debug \
     --pretrained_model_name_or_path $MODEL_NAME  \
     --instance_data_dir $INSTANCE_DIR \
     --output_dir $OUTPUT_DIR \
