@@ -45,11 +45,19 @@ export LAUNCHER="./opt/conda/bin/accelerate launch \
 export PYTHON_SCRIPT="diffusers/examples/dreambooth/train_dreambooth_sd3.py"
 
 # export MODEL_NAME="stabilityai/stable-diffusion-3-medium-diffusers"
-export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
+export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models-stabilityai-stable-diffusion-3-medium-diffusers"
 export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 export OUTPUT_DIR="/tmp/sd3-output"
 
-export SCRIPT_ARGS=" \
+export LAUNCH_CMD=" \
+    ./opt/conda/bin/accelerate launch \
+    --num_processes $NUM_PROCESSES \
+    --num_machines $NODE_COUNT \
+    --rdzv_backend c10d \
+    --main_process_ip $MASTER_ADDR \
+    --main_process_port $MASTER_PORT \
+    --machine_rank $RANK \
+    diffusers/examples/dreambooth/train_dreambooth_sd3.py \
     --pretrained_model_name_or_path $MODEL_NAME  \
     --instance_data_dir $INSTANCE_DIR \
     --output_dir $OUTPUT_DIR \
@@ -68,5 +76,4 @@ export SCRIPT_ARGS=" \
     "
 
 # This step is necessary because accelerate launch does not handle multiline arguments properly
-export NEW_CMD="$LAUNCHER $PYTHON_FILE $SCRIPT_ARGS"
-echo $NEW_CMD
+echo $LAUNCH_CMD
