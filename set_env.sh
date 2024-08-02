@@ -29,7 +29,7 @@ export NCCL_NVLS_ENABLE=0
 export NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS=$NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS
 export MASTER_ADDR=$(if [[ $RANK -gt 0 ]]; then echo $MASTER_ADDR;else echo localhost;fi)
 export MASTER_PORT=$MASTER_PORT
-export NUM_PROCESSES=$(($NODE_COUNT * $NUM_PROCESS))
+export NUM_PROCESSES=$(($NODE_COUNT * 8))
 
 export ACC_CONFIG="${ACC_CONFIG:-/hf-multi/2host_config.yaml}"
 
