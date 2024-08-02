@@ -1,6 +1,6 @@
 #/bin/bash
 
-export PYTHONPATH ./
+export PYTHONPATH="./"
 export NCCL_LIB_DIR="/usr/local/nvidia/lib64"
 export NCCL_FASTRAK_IFNAME=eth1,eth2,eth3,eth4,eth5,eth6,eth7,eth8
 export NCCL_FASTRAK_CTRL_DEV=eth0
