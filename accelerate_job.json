@@ -23,7 +23,7 @@
                         "-c"
                     ],
                     "args": [
-                        "git clone https://github.com/bvrockwell/hf-multi.git && chmod +x hf-multi/set_env.sh && ./hf-multi/set_env.sh && ./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG && echo $LAUNCH_CMD && $LAUNCH_CMD && $LAUNCH_CMD && $LAUNCH_CMD"
+                        "git clone https://github.com/bvrockwell/hf-multi.git && chmod +x hf-multi/set_env.sh && ./hf-multi/set_env.sh"
                     ],
                     "env": [
                         {
@@ -62,7 +62,7 @@
                         "-c"
                     ],
                     "args": [
-                        "git clone https://github.com/bvrockwell/hf-multi.git && chmod +x hf-multi/set_env.sh && ./hf-multi/set_env.sh && ./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG && echo $LAUNCH_CMD && $LAUNCH_CMD && $LAUNCH_CMD && $LAUNCH_CMD"
+                        "git clone https://github.com/bvrockwell/hf-multi.git && chmod +x hf-multi/set_env.sh && ./hf-multi/set_env.sh"
                     ],
                     "env": [
                         {

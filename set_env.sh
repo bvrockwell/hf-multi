@@ -50,7 +50,7 @@ export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 export OUTPUT_DIR="/tmp/sd3-output"
 
 export LAUNCH_CMD=" \
-    ./opt/conda/bin/accelerate launch \
+    /opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
     --num_machines $NODE_COUNT \
     --rdzv_backend c10d \
@@ -77,3 +77,6 @@ export LAUNCH_CMD=" \
 
 # This step is necessary because accelerate launch does not handle multiline arguments properly
 echo $LAUNCH_CMD
+./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG
+
+bash $LAUNCH_CMD
