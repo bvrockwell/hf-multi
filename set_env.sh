@@ -79,4 +79,4 @@ export LAUNCH_CMD=" \
 echo $LAUNCH_CMD
 ./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG
 
-bash $LAUNCH_CMD
+exec $LAUNCH_CMD
