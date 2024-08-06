@@ -49,7 +49,8 @@ export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilitya
 #export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered/gcs-sd-data"
 export OUTPUT_DIR="/tmp/sd3-output"
-
+export NCCL_DEBUG=INFO
+export NCCL_DEBUG_SUBSYS=INIT,NET
 export PROMPT1='photo'
 export PROMPT2='painting'
 export LAUNCH_CMD=" \
