@@ -56,7 +56,7 @@ export LAUNCH_CMD=" \
     /opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
     --num_machines $NODE_COUNT \
-    --rdzv_backend c10d \
+    --rdzv_backend static \
     --main_process_ip $MASTER_ADDR \
     --main_process_port $MASTER_PORT \
     --machine_rank $RANK \
