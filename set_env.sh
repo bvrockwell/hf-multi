@@ -53,8 +53,6 @@ export LAUNCH_CMD=" \
     --rdzv_conf=is_host=$(if ((RANK)); then echo 0; else echo 1; fi) 
     hf-multi/data.py \
     --instance_data_dir $INSTANCE_DIR \
-    # --output_dir $OUTPUT_DIR \
-    # --instance_prompt $PROMPT1 
     "
 
 # This step is necessary because accelerate launch does not handle multiline arguments properly
