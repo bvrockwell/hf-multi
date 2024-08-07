@@ -59,6 +59,5 @@ export LAUNCH_CMD=" \
 
 # This step is necessary because accelerate launch does not handle multiline arguments properly
 echo $LAUNCH_CMD
-./opt/conda/bin/accelerate config update --config_file $ACC_CONFIG
 
 exec $LAUNCH_CMD
