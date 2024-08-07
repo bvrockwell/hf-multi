@@ -43,7 +43,7 @@ echo MASTER_PORT: $MASTER_PORT
 #/opt/conda/bin/accelerate config update --config_file ./trainer/accelerate-files/2host_config.yaml
 
 export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
-export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
+export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered/gcs-sd-data"
 export OUTPUT_DIR="/tmp/sd3-output"
 
 chmod +x -R diffusers
