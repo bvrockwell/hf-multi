@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export PYTHONPATH="./"
+python -c "print('******* All Reduce Network Benchmark Starts *******')"
+rm -f /usr/share/all_reduce_benchmarks/workload_terminated
 export NCCL_LIB_DIR="/usr/local/nvidia/lib64"
 export NCCL_FASTRAK_IFNAME=eth1,eth2,eth3,eth4,eth5,eth6,eth7,eth8
 export NCCL_FASTRAK_CTRL_DEV=eth0
@@ -24,38 +25,45 @@ export NCCL_TUNER_PLUGIN=libnccl-tuner.so
 export NCCL_TUNER_CONFIG_PATH=${NCCL_LIB_DIR}/a3plus_tuner_config.textproto
 export NCCL_SHIMNET_GUEST_CONFIG_CHECKER_CONFIG_FILE=${NCCL_LIB_DIR}/a3plus_guest_config.textproto
 export NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS=600000
-export NCCL_NVLS_ENABLE=0 
+export NCCL_NVLS_ENABLE=0
+# export TORCH_CPP_LOG_LEVEL=INFO # this is to turn on the verbose torch logs
+# export TORCH_DISTRIBUTED_DEBUG=DETAIL
 
-export NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS=$NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS
-export MASTER_ADDR=$(if [[ $RANK -gt 0 ]]; then echo $MASTER_ADDR;else echo localhost;fi)
-export MASTER_PORT=$MASTER_PORT
-export NUM_PROCESSES=$(($NODE_COUNT * 8))
-
-export ACC_CONFIG="${ACC_CONFIG:-/hf-multi/2host_config.yaml}"
-
-# export MODEL_NAME="stabilityai/stable-diffusion-3-medium-diffusers"
-export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
-# export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
-# export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered/gcs-sd-data"
-export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered"
-
-export OUTPUT_DIR="/tmp/sd3-output"
+# Debug NCCL
 export NCCL_DEBUG=INFO
-export NCCL_DEBUG_SUBSYS=INIT,NET
 
-export LAUNCH_CMD=" \
-    torchrun
-    --nproc-per-node="8" \
-    --nnodes="${NODE_COUNT}" \
+python -c "print('Number of nodes participating: 2')"
+echo NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS: $NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS
+echo MASTER_ADDR: $MASTER_ADDR
+echo MASTER_PORT: $MASTER_PORT
+
+# update config for # of nodes
+#/opt/conda/bin/accelerate config update --config_file ./trainer/accelerate-files/2host_config.yaml
+
+export MODEL_NAME="./trainer/models--stabilityai--stable-diffusion-3-medium-diffusers"
+export INSTANCE_DIR="./trainer/dog"
+export OUTPUT_DIR="/tmp/sd3-output"
+
+chmod +x -R diffusers
+torchrun --nnodes=2 \
+    --nproc-per-node=8 \
+    --max-restarts=3 \
+    --rdzv-id=sd3-2node-torchrun \
     --rdzv-backend=c10d \
-    --rdzv_id="${rdzv_id}" \
-    --rdzv-endpoint="${MASTER_ADDR}:${MASTER_PORT}" \
-    --rdzv_conf=is_host=$(if ((RANK)); then echo 0; else echo 1; fi) 
-    hf-multi/data.py \
-    --instance_data_dir $INSTANCE_DIR \
-    "
-
-# This step is necessary because accelerate launch does not handle multiline arguments properly
-echo $LAUNCH_CMD
-
-exec $LAUNCH_CMD
+    --rdzv-endpoint=$(if [[ $RANK -gt 0 ]]; then echo $MASTER_ADDR;else echo localhost;fi):$MASTER_PORT \
+  diffusers/examples/dreambooth/train_dreambooth_sd3.py \
+  --pretrained_model_name_or_path=$MODEL_NAME  \
+  --instance_data_dir=$INSTANCE_DIR \
+  --output_dir=$OUTPUT_DIR \
+  --mixed_precision="fp16" \
+  --instance_prompt="a photo of sks dog" \
+  --resolution=1024 \
+  --train_batch_size=1 \
+  --gradient_accumulation_steps=4 \
+  --learning_rate=1e-4 \
+  --lr_scheduler="constant" \
+  --lr_warmup_steps=0 \
+  --max_train_steps=500 \
+  --validation_prompt="A photo of sks dog in a bucket" \
+  --validation_epochs=25 \
+  --seed="0"
