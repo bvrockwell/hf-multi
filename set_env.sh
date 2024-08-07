@@ -46,7 +46,7 @@ export NCCL_DEBUG_SUBSYS=INIT,NET
 export LAUNCH_CMD=" \
     torchrun
     --nproc-per-node="8" \
-    --nnodes="${NUM_PROCESSES}" \
+    --nnodes="${NODE_COUNT}" \
     --rdzv-backend=c10d \
     --rdzv_id="${rdzv_id}" \
     --rdzv-endpoint="${MASTER_ADDR}:${MASTER_PORT}" \
