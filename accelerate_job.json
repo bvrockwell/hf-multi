@@ -17,7 +17,7 @@
                 },
                 "replicaCount": "1",
                 "containerSpec": {
-                    "imageUri": "nvidia/pytorch:24.01-py3",
+                    "imageUri": "us-east5-docker.pkg.dev/google.com/vertex-training-dlexamples/hosseins-a3-mega-training-repository/all-reduce-pytorch-24-05:v9",
                     "command": [
                         "sh",
                         "-c"
@@ -56,7 +56,7 @@
                 },
                 "replicaCount": "1",
                 "containerSpec": {
-                    "imageUri": "nvidia/pytorch:24.01-py3",
+                    "imageUri": "us-east5-docker.pkg.dev/google.com/vertex-training-dlexamples/hosseins-a3-mega-training-repository/all-reduce-pytorch-24-05:v9",
                     "command": [
                         "sh",
                         "-c"
