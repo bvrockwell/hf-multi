@@ -33,26 +33,15 @@ export NUM_PROCESSES=$(($NODE_COUNT * 8))
 
 export ACC_CONFIG="${ACC_CONFIG:-/hf-multi/2host_config.yaml}"
 
-export LAUNCHER="./opt/conda/bin/accelerate launch \
-    --num_processes $NUM_PROCESSES \
-    --num_machines $NODE_COUNT \
-    --rdzv_backend c10d \
-    --main_process_ip $MASTER_ADDR \
-    --main_process_port $MASTER_PORT \
-    --machine_rank $RANK \
-    "
-
-export PYTHON_SCRIPT="diffusers/examples/dreambooth/train_dreambooth_sd3.py"
-
 # export MODEL_NAME="stabilityai/stable-diffusion-3-medium-diffusers"
 export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
-#export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
-export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered/gcs-sd-data"
+# export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
+# export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered/gcs-sd-data"
+export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered"
+
 export OUTPUT_DIR="/tmp/sd3-output"
 export NCCL_DEBUG=INFO
 export NCCL_DEBUG_SUBSYS=INIT,NET
-export PROMPT1='photo'
-export PROMPT2='painting'
 export LAUNCH_CMD=" \
     /opt/conda/bin/accelerate launch \
     --num_processes $NUM_PROCESSES \
@@ -61,21 +50,10 @@ export LAUNCH_CMD=" \
     --main_process_ip $MASTER_ADDR \
     --main_process_port $MASTER_PORT \
     --machine_rank $RANK \
-    diffusers/examples/dreambooth/train_dreambooth_sd3.py \
-    --pretrained_model_name_or_path $MODEL_NAME  \
+    hf-multi/data.py \
     --instance_data_dir $INSTANCE_DIR \
-    --output_dir $OUTPUT_DIR \
-    --instance_prompt $PROMPT1 \
-    --resolution 512 \
-    --train_batch_size 1 \
-    --gradient_accumulation_steps 4 \
-    --learning_rate 1e-4 \
-    --lr_scheduler constant \
-    --lr_warmup_steps 0 \
-    --max_train_steps 500 \
-    --validation_prompt $PROMPT2 \
-    --validation_epochs 25 \
-    --seed 0 \
+    # --output_dir $OUTPUT_DIR \
+    # --instance_prompt $PROMPT1 
     "
 
 # This step is necessary because accelerate launch does not handle multiline arguments properly
