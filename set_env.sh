@@ -42,14 +42,15 @@ export INSTANCE_DIR="/gcs/dlexamples-shared-data/webdataset-moments-filtered"
 export OUTPUT_DIR="/tmp/sd3-output"
 export NCCL_DEBUG=INFO
 export NCCL_DEBUG_SUBSYS=INIT,NET
+
 export LAUNCH_CMD=" \
-    /opt/conda/bin/accelerate launch \
-    --num_processes $NUM_PROCESSES \
-    --num_machines $NODE_COUNT \
-    --rdzv_backend static \
-    --main_process_ip $MASTER_ADDR \
-    --main_process_port $MASTER_PORT \
-    --machine_rank $RANK \
+    torchrun
+    --nproc-per-node="8" \
+    --nnodes="${NUM_PROCESSES}" \
+    --rdzv-backend=c10d \
+    --rdzv_id="${rdzv_id}" \
+    --rdzv-endpoint="${MASTER_ADDR}:${MASTER_PORT}" \
+    --rdzv_conf=is_host=$(if ((RANK)); then echo 0; else echo 1; fi) 
     hf-multi/data.py \
     --instance_data_dir $INSTANCE_DIR \
     # --output_dir $OUTPUT_DIR \
