@@ -26,6 +26,8 @@ export NCCL_TUNER_CONFIG_PATH=${NCCL_LIB_DIR}/a3plus_tuner_config.textproto
 export NCCL_SHIMNET_GUEST_CONFIG_CHECKER_CONFIG_FILE=${NCCL_LIB_DIR}/a3plus_guest_config.textproto
 export NCCL_FASTRAK_PLUGIN_ACCEPT_TIMEOUT_MS=600000
 export NCCL_NVLS_ENABLE=0
+export CLOUD_ML_JOB_ID=123
+
 # export TORCH_CPP_LOG_LEVEL=INFO # this is to turn on the verbose torch logs
 # export TORCH_DISTRIBUTED_DEBUG=DETAIL
 
@@ -40,15 +42,15 @@ echo MASTER_PORT: $MASTER_PORT
 # update config for # of nodes
 #/opt/conda/bin/accelerate config update --config_file ./trainer/accelerate-files/2host_config.yaml
 
-export MODEL_NAME="./trainer/models--stabilityai--stable-diffusion-3-medium-diffusers"
-export INSTANCE_DIR="./trainer/dog"
+export MODEL_NAME="/gcs/dlexamples-shared-data/sd3-dreambooth/models--stabilityai--stable-diffusion-3-medium-diffusers"
+export INSTANCE_DIR="/gcs/dlexamples-shared-data/sd3-dreambooth/dog"
 export OUTPUT_DIR="/tmp/sd3-output"
 
 chmod +x -R diffusers
 torchrun --nnodes=2 \
     --nproc-per-node=8 \
     --max-restarts=3 \
-    --rdzv-id=sd3-2node-torchrun \
+    --rdzv-id=123 \
     --rdzv-backend=c10d \
     --rdzv-endpoint=$(if [[ $RANK -gt 0 ]]; then echo $MASTER_ADDR;else echo localhost;fi):$MASTER_PORT \
   diffusers/examples/dreambooth/train_dreambooth_sd3.py \
